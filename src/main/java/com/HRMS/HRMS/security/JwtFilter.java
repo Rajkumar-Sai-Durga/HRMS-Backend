@@ -31,6 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response); // DO NOT CHECK HEADERS
             return;
         }
+
         final String authHeader = request.getHeader("Authorization");
         String token = null;
         String email = null;
