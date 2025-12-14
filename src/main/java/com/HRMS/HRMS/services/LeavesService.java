@@ -48,6 +48,24 @@ public class LeavesService {
         }
     }
 
+    public boolean updateLeave(int leaveId, LeaveRequest request, String email) {
+        try{
+            leavesRepo.updateLeaveDetails(leaveId, request.getLeaveType(), request.getStartDate(), request.getEndDate(), request.getReason());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean deleteLeaveApplication(int leaveId) {
+        try{
+            leavesRepo.deleteById(leaveId);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public String leaveDecision(int leaveId, LeaveDecisionRequest request, String email) {
         Employees admin = employeeRepo.findByEmail(email);
         Leaves leaveInfo = leavesRepo.findById(leaveId).orElse(new Leaves());
@@ -81,5 +99,10 @@ public class LeavesService {
 
     public List<Leaves> showEmployeeLeaves(String employeeId) {
         return leavesRepo.findLeaveApplicationsByEmployeeId(employeeId);
+    }
+
+
+    public Leaves getLeaveById(int leaveId) {
+        return leavesRepo.findById(leaveId).orElse(null);
     }
 }
