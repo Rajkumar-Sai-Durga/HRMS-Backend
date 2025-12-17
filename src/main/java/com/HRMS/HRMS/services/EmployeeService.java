@@ -2,6 +2,8 @@ package com.HRMS.HRMS.services;
 
 import com.HRMS.HRMS.Repository.EmployeeRepo;
 import com.HRMS.HRMS.model.Employees;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +17,15 @@ public class EmployeeService {
 
     EmployeeRepo employeeRepo;
     PasswordEncoder passwordEncoder;
-    EmployeeService(EmployeeRepo employeeRepo, PasswordEncoder passwordEncoder){
+    JavaMailSender javaMailSender;
+    EmployeeService(EmployeeRepo employeeRepo, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender){
         this.employeeRepo=employeeRepo;
         this.passwordEncoder=passwordEncoder;
+        this.javaMailSender=javaMailSender;
     }
 
     public String addEmployee(Employees employee) {
-        Employees existedEmp = employeeRepo.findByEmail(employee.getEmail());
+        Employees existedEmp = employeeRepo.findEmployeeByEmail(employee.getEmail());
         if(existedEmp == null){
             employee.setEmployeeId(generateEmployeeId());
             employee.setPassword(passwordEncoder.encode(employee.getPassword()));
@@ -30,4 +34,10 @@ public class EmployeeService {
         }
         return "Employee with this email already exists";
     }
+
+    public Employees findEmployeeByEmail(String email){
+        return employeeRepo.findEmployeeByEmail(email);
+    }
+
+
 }

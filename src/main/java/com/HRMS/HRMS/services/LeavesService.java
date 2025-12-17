@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LeavesService {
@@ -22,7 +23,7 @@ public class LeavesService {
     }
 
     public boolean applieLeave(LeaveRequest request, String email) {
-        Employees employees = employeeRepo.findByEmail(email);
+        Employees employees = employeeRepo.findEmployeeByEmail(email);
         try{
             Leaves newLeave = new Leaves();
 
@@ -67,7 +68,7 @@ public class LeavesService {
     }
 
     public String leaveDecision(int leaveId, LeaveDecisionRequest request, String email) {
-        Employees admin = employeeRepo.findByEmail(email);
+        Optional<Employees> admin = employeeRepo.findByEmail(email);
         Leaves leaveInfo = leavesRepo.findById(leaveId).orElse(new Leaves());
         try{
             Leaves newLeave = new Leaves();
@@ -82,8 +83,8 @@ public class LeavesService {
             newLeave.setAppliedAt(leaveInfo.getAppliedAt());
 
             newLeave.setStatus(request.getStatus());
-            newLeave.setApprovedBy(admin.getEmployeeId());
-            newLeave.setApprovedByName(admin.getUsername());
+            newLeave.setApprovedBy(admin.map(Employees::getEmployeeId).toString());
+            newLeave.setApprovedByName(admin.map(Employees::getFirstName).toString());
             newLeave.setDecisionAt(new Date());
 
             leavesRepo.save(newLeave);

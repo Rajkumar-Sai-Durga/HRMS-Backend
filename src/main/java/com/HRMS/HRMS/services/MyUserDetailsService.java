@@ -11,17 +11,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
-    EmployeeRepo employeeRepo;
+    private final EmployeeRepo employeeRepo;
     MyUserDetailsService (EmployeeRepo employeeRepo){
         this.employeeRepo=employeeRepo;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Employees employee = employeeRepo.findByEmail(email);
-        if(employee == null){
-            throw new UsernameNotFoundException("User not Found");
-        }
-        return User.withUsername(employee.getEmail()).password(employee.getPassword()).roles(employee.getRole()).build();
+    public UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
+
+
+        Employees employee = employeeRepo.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not Found"));
+
+        return User.withUsername(employee.getEmail())
+                .password(employee.getPassword())
+                .roles(employee.getRole()) // EMPLOYEE / HR
+                .build();
     }
+
 }
+

@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
-    private String accessToken;
-    private String message;
-    private Object userInfo;
+public class ResetPassword {
+    private String email;
+    private String otp;
+    private String newPassword;
 }

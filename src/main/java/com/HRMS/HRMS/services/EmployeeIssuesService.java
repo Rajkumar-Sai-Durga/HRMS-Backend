@@ -6,6 +6,8 @@ import com.HRMS.HRMS.dto.employeeIssues.AdminIssueDto;
 import com.HRMS.HRMS.dto.employeeIssues.EmployeeIssueDto;
 import com.HRMS.HRMS.model.EmployeeIssues;
 import com.HRMS.HRMS.model.Employees;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -65,7 +67,6 @@ public class EmployeeIssuesService{
     }
 
     public List<EmployeeIssues> updateEmployeeIssues(int issueId, String adminId, AdminIssueDto issueDto) {
-//        EmployeeIssues existedIssue = employeeIssuesRepo.findById(issueId).orElse(new EmployeeIssues());
         Employees admin = employeeRepo.findEmployeeByEmployeeId(adminId);
         try {
             Date date = new Date();
@@ -75,4 +76,5 @@ public class EmployeeIssuesService{
             return null;
         }
     }
+
 }
