@@ -49,12 +49,12 @@ public class EmployeeIssuesService{
         return employeeIssuesRepo.findAllByEmployeeId(employeeId);
     }
 
-    public List<EmployeeIssues> DeleteEmployeeIssues(int issueId, String employeeId) {
+    public boolean DeleteEmployeeIssues(int issueId) {
         try {
             employeeIssuesRepo.deleteById(issueId);
-            return employeeIssuesRepo.findAllByEmployeeId(employeeId);
+            return true;
         }catch (Exception e){
-            return null;
+            return false;
         }
     }
 

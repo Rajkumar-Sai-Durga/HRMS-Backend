@@ -30,7 +30,7 @@ public class EmployeeIssuesController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ObjectResponse(null,"Request Failed"));
     }
 
-//    employee all raised issues
+//    employee get raised issues
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<?> getAllEmployeeIssues(@PathVariable String employeeId){
         List<EmployeeIssues> issuesList = employeeIssuesService.getAllEmployeeIssues(employeeId);
@@ -40,11 +40,11 @@ public class EmployeeIssuesController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ObjectResponse(null,"Request Failed"));
     }
 
-    //    employee delete raised issues
-    @DeleteMapping("/employee/{issueId}/delete")
-    public ResponseEntity<?> getAllEmployeeIssues(@PathVariable int issueId, @RequestParam("employeeId") String employeeId){
-        List<EmployeeIssues> issuesList = employeeIssuesService.DeleteEmployeeIssues(issueId, employeeId);
-        if(issuesList != null){
+    //    employee delete issues
+    @DeleteMapping("/employee/{issueId}")
+    public ResponseEntity<?> getAllEmployeeIssues(@PathVariable int issueId){
+        boolean issuesList = employeeIssuesService.DeleteEmployeeIssues(issueId);
+        if(issuesList){
             return ResponseEntity.status(HttpStatus.OK).body(new ObjectResponse(issuesList,"Deleted successfully"));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ObjectResponse(null,"Request Failed"));
@@ -55,7 +55,7 @@ public class EmployeeIssuesController {
     public ResponseEntity<?> getAllIssues(){
         List<EmployeeIssues> issuesList = employeeIssuesService.getAllIssues();
         if(issuesList != null){
-            return ResponseEntity.status(HttpStatus.OK).body(new ObjectResponse(issuesList,"Deleted successfully"));
+            return ResponseEntity.status(HttpStatus.OK).body(new ObjectResponse(issuesList,"All the issues"));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ObjectResponse(null,"Request Failed"));
     }

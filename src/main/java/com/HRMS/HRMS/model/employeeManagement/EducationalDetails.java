@@ -23,6 +23,7 @@ public class EducationalDetails {
 
     private String degreeType;
     private String degree;
+    private String institute;
     private String specialization;
     private Date started;
     private Date ended;

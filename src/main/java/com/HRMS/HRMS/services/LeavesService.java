@@ -68,7 +68,7 @@ public class LeavesService {
     }
 
     public String leaveDecision(int leaveId, LeaveDecisionRequest request, String email) {
-        Optional<Employees> admin = employeeRepo.findByEmail(email);
+        Employees admin = employeeRepo.findEmployeeByEmail(email);
         Leaves leaveInfo = leavesRepo.findById(leaveId).orElse(new Leaves());
         try{
             Leaves newLeave = new Leaves();
@@ -83,8 +83,8 @@ public class LeavesService {
             newLeave.setAppliedAt(leaveInfo.getAppliedAt());
 
             newLeave.setStatus(request.getStatus());
-            newLeave.setApprovedBy(admin.map(Employees::getEmployeeId).toString());
-            newLeave.setApprovedByName(admin.map(Employees::getFirstName).toString());
+            newLeave.setApprovedBy(admin.getEmployeeId());
+            newLeave.setApprovedByName(admin.getFirstName());
             newLeave.setDecisionAt(new Date());
 
             leavesRepo.save(newLeave);

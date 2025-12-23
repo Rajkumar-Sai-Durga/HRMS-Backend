@@ -7,6 +7,8 @@ import com.HRMS.HRMS.model.employeeManagement.EmployeeManage;
 import com.HRMS.HRMS.model.Employees;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProfessionalDetailsService {
     ProfessionalDetailsRepo professionalDetailsRepo;
@@ -17,13 +19,17 @@ public class ProfessionalDetailsService {
     }
 
     public boolean addDetails(String employeeId, ProfessionalDetails pDetails) {
-        Employees emp = employeeRepo.findEmployeeByEmployeeId(employeeId);
         try {
+            Employees emp = employeeRepo.findEmployeeByEmployeeId(employeeId);
+            if(emp == null){
+                return false;
+            }
             EmployeeManage details = new EmployeeManage();
             details.setEmployee(emp);
             details.setCategory(pDetails.getCategory());
             details.setDepartment(pDetails.getDepartment());
             details.setJobTitle(pDetails.getJobTitle());
+            System.out.println(details.toString());
             professionalDetailsRepo.save(details);
             return true;
         } catch (Exception e) {
@@ -32,6 +38,7 @@ public class ProfessionalDetailsService {
     }
 
     public EmployeeManage getDetails(String employeeId) {
+
         return professionalDetailsRepo.findByEmployeeId(employeeId);
     }
 
@@ -48,5 +55,9 @@ public class ProfessionalDetailsService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public List<EmployeeManage> getAllEmployees() {
+        return professionalDetailsRepo.findAll();
     }
 }

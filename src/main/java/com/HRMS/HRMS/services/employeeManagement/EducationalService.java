@@ -25,6 +25,7 @@ public class EducationalService {
             details.setEmployee(emp);
             details.setDegreeType(dto.getDegreeType());
             details.setDegree(dto.getDegree());
+            details.setInstitute(dto.getInstitute());
             details.setSpecialization(dto.getSpecialization());
             details.setStarted(dto.getStarted());
             details.setEnded(dto.getEnded());

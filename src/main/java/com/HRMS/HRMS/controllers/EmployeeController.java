@@ -90,25 +90,18 @@ public class EmployeeController {
     @PostMapping("/forget-password")
     public ResponseEntity<?> forgetPassword(@RequestBody ForgetPassword fp){
         try {
-            System.out.println("step1"+ fp.toString());
-            Employees employees = employeeRepo.findEmployeeByEmail(fp.getEmail());
-            System.out.println("step2"+ employees.toString());
-            if (employees == null) {
-                System.out.println("step3");
-                return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponse("User Not found"));
+            try{
+                Employees employees = employeeRepo.findEmployeeByEmail(fp.getEmail());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponse("User not found"));
             }
-
-            System.out.println("step3");
             String otp = otpStore.generateOtp();
-            System.out.println("step4");
             otpStore.saveOtp(fp.getEmail(), otp);
-            System.out.println("step5");
             otpStore.sendOtp(fp.getEmail(), otp);
-            System.out.println("step6");
-
+            System.out.println("Sent OTP successful");
             return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponse("OTP sent"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponse("Server not responding"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponse("Server is not responding"));
         }
     }
 
@@ -121,6 +114,8 @@ public class EmployeeController {
             }
             employeeRepo.updatePasswordByEmail(rp.getEmail(), passwordEncoder.encode(rp.getNewPassword()));
             otpStore.removeOtp(rp.getEmail());
+            System.out.println("Password updated successful");
+            otpStore.updatedMail(rp.getEmail());
             return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponse("Password updated successful"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponse("Something went wrong"));

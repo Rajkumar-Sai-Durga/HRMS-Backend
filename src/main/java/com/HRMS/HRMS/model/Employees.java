@@ -28,5 +28,6 @@ public class Employees {
     private String email;
     private String password;
     private String role;
+    private String gender;
 
 }

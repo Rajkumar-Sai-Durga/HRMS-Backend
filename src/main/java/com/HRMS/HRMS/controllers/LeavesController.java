@@ -24,11 +24,18 @@ public class LeavesController {
 //    apply leaves employee
     @PostMapping("/apply")
     public ResponseEntity<?> applyLeave(@RequestBody LeaveRequest request, Authentication authentication){
+        System.out.println("leve1");
         String email = authentication.getName();
+        System.out.println("leve2");
+
         boolean save = leavesService.applieLeave(request, email);
+        System.out.println("leve3");
+
         if(save){
             return ResponseEntity.status(HttpStatus.OK).body(new RegisterResponse("Applied successfully"));
         }
+        System.out.println("leve4");
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RegisterResponse("Application failed"));
     }
 
